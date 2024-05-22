@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_api_calls/customWidgets/userWidget.dart';
+import 'package:flutter_api_calls/customWidgets/user_widget.dart';
 import 'package:flutter_api_calls/service/apiService.dart';
 
 class UserScreen extends StatefulWidget {

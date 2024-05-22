@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_api_calls/customWidgets/photoWidget.dart';
+import 'package:flutter_api_calls/customWidgets/todo_widget.dart';
 import 'package:flutter_api_calls/service/apiService.dart';
 
-class PhotoScreen extends StatelessWidget {
-  const PhotoScreen({super.key});
+class TodoScreen extends StatefulWidget {
+  const TodoScreen({super.key});
 
+  @override
+  State<TodoScreen> createState() => _TodoScreenState();
+}
+
+class _TodoScreenState extends State<TodoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Photos"),
+        title: const Text("Todos "),
       ),
       body: Center(
         child: FutureBuilder(
-          future: ApiService().getAllPhotos(),
+          future: ApiService().getAllTodos(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  return PhotoWidget(
+                  return TodoWidget(
+                      userId: snapshot.data![index].userId,
                       id: snapshot.data![index].id,
-                      albumId: snapshot.data![index].albumId,
                       title: snapshot.data![index].title,
-                      url: snapshot.data![index].url,
-                      thumbnailUrl: snapshot.data![index].thumbnailUrl);
+                      completed: snapshot.data![index].completed);
                 },
               );
             }

@@ -1,28 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_api_calls/customWidgets/postsWidget.dart';
-import 'package:flutter_api_calls/models/Post.dart';
+import 'package:flutter_api_calls/customWidgets/posts_widget.dart';
 import 'package:flutter_api_calls/service/apiService.dart';
 
-class PostsScreen extends StatefulWidget {
-  const PostsScreen({super.key});
-
-  @override
-  State<PostsScreen> createState() => _PostsScreenState();
-}
-
-class _PostsScreenState extends State<PostsScreen> {
-  List<Post>? _postsList;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  // Future getPosts() async {
-  //   _postsList = await ApiService().getAllPosts();
-  //
-  //   setState(() {});
-  // }
+class GetxPostsScreen extends StatelessWidget {
+  const GetxPostsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +29,14 @@ class _PostsScreenState extends State<PostsScreen> {
                     );
                   },
                   separatorBuilder: (context, index) => Divider(),
-                  itemCount: snapshot.data!.length);
+                  itemCount: (snapshot.data!.length > 0) ? 50 : 0);
             }
 
             if (snapshot.hasError) {
-              return Text("Unable to fetch data! Try again later");
+              return const Text("Unable to fetch data! Try again later");
             }
 
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           },
         ),
       ),

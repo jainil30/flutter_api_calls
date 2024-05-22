@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_api_calls/boxes/boxes.dart';
-import 'package:flutter_api_calls/customWidgets/AlbumWidget.dart';
+import 'package:flutter_api_calls/customWidgets/album_widget.dart';
 import 'package:flutter_api_calls/models/Album.dart';
 import 'package:flutter_api_calls/service/apiService.dart';
 
@@ -13,7 +13,6 @@ class AlbumScreen extends StatefulWidget {
 
 class _AlbumScreenState extends State<AlbumScreen> {
   List<Album> _albums = [];
-  bool _isLocallyStore = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,15 +22,14 @@ class _AlbumScreenState extends State<AlbumScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (_isLocallyStore) {
-            print("IF ::::::  _isLocallyStore");
+          if (Boxes.getAlbums().values.isNotEmpty) {
+            print("IF ::::::  isLocallyStore");
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Albums are already stored locally")));
           } else {
-            print("ELSE ::::::  _isLocallyStore");
+            print("ELSE ::::::  isLocallyStore");
             var dataBox = Boxes.getAlbums();
             dataBox.addAll(_albums);
-            _isLocallyStore = true;
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Albums are stored locally")));
           }
@@ -57,15 +55,17 @@ class _AlbumScreenState extends State<AlbumScreen> {
                             userId: snapshot.data![index].userId,
                             title: snapshot.data![index].title));
                   },
-                  separatorBuilder: (context, index) => Divider(),
-                  itemCount: snapshot.data!.length);
+                  separatorBuilder: (context, index) => const Divider(
+                        thickness: 0.2,
+                      ),
+                  itemCount: (snapshot.data!.length > 0) ? 50 : 0);
             }
 
             if (snapshot.hasError) {
               return Text("Unable to fetch data! Try again later");
             }
 
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           },
         ),
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_api_calls/boxes/boxes.dart';
-import 'package:flutter_api_calls/customWidgets/AlbumWidget.dart';
+import 'package:flutter_api_calls/customWidgets/album_widget.dart';
 import 'package:flutter_api_calls/models/Album.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -24,18 +24,18 @@ class _LocalAlbumScreenState extends State<LocalAlbumScreen> {
           onPressed: () {
             if (Boxes.getAlbums().length != 0) {
               Boxes.getAlbums().clear();
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text("Deleted all data")));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Deleted all data")));
             } else {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text("No Data to delete")));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("No Data to delete")));
             }
           },
         ),
         body: ValueListenableBuilder<Box<Album>>(
           valueListenable: Boxes.getAlbums().listenable(),
           builder: (context, value, child) {
-            if (value.length == 0) {
+            if (Boxes.getAlbums().values.isEmpty) {
               return const Center(child: Text("Data is not available"));
             }
 
@@ -47,7 +47,7 @@ class _LocalAlbumScreenState extends State<LocalAlbumScreen> {
                       title: value.getAt(index)!.title);
                 },
                 separatorBuilder: (context, index) => Divider(),
-                itemCount: value.length);
+                itemCount: (value.length > 0 && value.length > 10) ? 10 : 0);
           },
         ));
   }
